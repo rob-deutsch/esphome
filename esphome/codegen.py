@@ -12,7 +12,7 @@ from esphome.cpp_generator import (  # noqa
     Expression, RawExpression, RawStatement, TemplateArguments,
     StructInitializer, ArrayInitializer, safe_exp, Statement, LineComment,
     progmem_array, statement, variable, Pvariable, new_Pvariable,
-    add, add_global, add_library, add_build_flag, add_define,
+    add, add_global, add_library, add_library_url, add_build_flag, add_define,
     get_variable, get_variable_with_full_id, process_lambda, is_template, templatable, MockObj,
     MockObjClass)
 from esphome.cpp_helpers import (  # noqa
