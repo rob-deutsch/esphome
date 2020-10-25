@@ -118,8 +118,7 @@ CONFIG_SCHEMA = cv.All(cv.Schema({
         cv.Optional(CONF_LEVEL): logger.is_log_level,
     }), validate_message_just_topic),
 
-    cv.Optional(CONF_SSL_FINGERPRINTS): cv.All(cv.only_on_esp8266,
-                                               cv.ensure_list(validate_fingerprint)),
+    cv.Optional(CONF_SSL_FINGERPRINTS): cv.ensure_list(validate_fingerprint),
     cv.Optional(CONF_KEEPALIVE, default='15s'): cv.positive_time_period_seconds,
     cv.Optional(CONF_REBOOT_TIMEOUT, default='15min'): cv.positive_time_period_milliseconds,
     cv.Optional(CONF_ON_MESSAGE): automation.validate_automation({
@@ -155,7 +154,7 @@ def to_code(config):
     yield cg.register_component(var, config)
 
     # https://github.com/OttoWinter/async-mqtt-client/blob/master/library.json
-    cg.add_library('AsyncMqttClient-esphome', '0.8.4')
+    cg.add_library_url('AsyncMqttClient-esphome', 'https://github.com/tve/async-mqtt-client/archive/master.zip')
     cg.add_define('USE_MQTT')
     cg.add_global(mqtt_ns.using)
 

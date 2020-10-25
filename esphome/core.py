@@ -407,6 +407,29 @@ class Library:
             return self.as_tuple == other.as_tuple
         return NotImplemented
 
+class LibraryURL:
+    def __init__(self, name, url):
+        self.name = name
+        self.url = url
+
+    @property
+    def as_lib_dep(self):
+        if self.url is None:
+            return self.name
+        return f'{self.name}={self.url}'
+
+    @property
+    def as_tuple(self):
+        return self.name, self.url
+
+    def __hash__(self):
+        return hash(self.as_tuple)
+
+    def __eq__(self, other):
+        if isinstance(other, LibraryURL):
+            return self.as_tuple == other.as_tuple
+        return NotImplemented
+
 
 def coroutine(func):
     return coroutine_with_priority(0.0)(func)
@@ -700,8 +723,8 @@ class EsphomeCore:
         return expression
 
     def add_library(self, library):
-        if not isinstance(library, Library):
-            raise ValueError("Library {} must be instance of Library, not {}"
+        if not (isinstance(library, Library) or isinstance(library, LibraryURL)):
+            raise ValueError("Library {} must be instance of Library or LibraryURL, not {}"
                              "".format(library, type(library)))
         _LOGGER.debug("Adding library: %s", library)
         for other in self.libraries[:]:

@@ -9,7 +9,7 @@ CODEOWNERS = ['@OttoWinter']
 def to_code(config):
     if CORE.is_esp32:
         # https://github.com/OttoWinter/AsyncTCP/blob/master/library.json
-        cg.add_library('AsyncTCP-esphome', '1.1.1')
+        cg.add_library_url('AsyncTCP-esphome', 'https://github.com/tve/AsyncTCP/archive/mbed-tls-try2.zip')
     elif CORE.is_esp8266:
         # https://github.com/OttoWinter/ESPAsyncTCP
         cg.add_library('ESPAsyncTCP-esphome', '1.2.3')

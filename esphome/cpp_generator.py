@@ -7,8 +7,8 @@ from typing import Any, Generator, List, Optional, Tuple, Type, Union, Sequence
 
 from esphome.core import (  # noqa
     CORE, HexInt, ID, Lambda, TimePeriod, TimePeriodMicroseconds,
-    TimePeriodMilliseconds, TimePeriodMinutes, TimePeriodSeconds, coroutine, Library, Define,
-    EnumValue)
+    TimePeriodMilliseconds, TimePeriodMinutes, TimePeriodSeconds, coroutine, Library, LibraryURL,
+    Define, EnumValue)
 from esphome.helpers import cpp_string_escape, indent_all_but_first_and_last
 from esphome.util import OrderedDict
 
@@ -473,6 +473,14 @@ def add_library(name: str, version: Optional[str]):
     :param version: The version of the library, may be None.
     """
     CORE.add_library(Library(name, version))
+
+def add_library_url(name: str, url: Optional[str]):
+    """Add a library to the codegen library storage.
+
+    :param name: The name of the library (for example 'AsyncTCP')
+    :param url: The url of the library, may be None.
+    """
+    CORE.add_library(LibraryURL(name, url))
 
 
 def add_build_flag(build_flag: str):
