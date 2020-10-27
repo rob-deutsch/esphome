@@ -42,6 +42,8 @@ void MitsubishiHeavyClimate::transmit_state() {
   }
 
   temperatureCmd = (uint8_t) clamp(this->target_temperature, MITSUBISHI_TEMP_MIN, MITSUBISHI_TEMP_MAX);
+
+  // heatpumpIR->send(NULL, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd);
 }
 
 }  // namespace mitsubishi
