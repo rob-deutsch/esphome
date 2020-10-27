@@ -11,13 +11,14 @@ namespace mitsubishi_heavy {
 class IRSenderESPHome : public IRSender
 {
   public:
-    IRSenderESPHome(uint8_t pin);
+    IRSenderESPHome(uint8_t pin, remote_transmitter::RemoteTransmitterComponent transmitter);
     void setFrequency(int frequency);
     void space(int spaceLength);
     void mark(int markLength);
 
   protected:
-    // remote_base::RemoteTransmitterBase::TransmitCall _transmit;
+    remote_transmitter::RemoteTransmitterComponent::TransmitCall* _transmit;
+    remote_base::RemoteTransmitData* _data;
 };
 
 
