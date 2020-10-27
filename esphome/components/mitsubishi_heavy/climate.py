@@ -8,6 +8,8 @@ AUTO_LOAD = ['climate_ir']
 mitsubishi_heavy_ns = cg.esphome_ns.namespace('mitsubishi_heavy')
 MitsubishiHeavyClimate = mitsubishi_heavy_ns.class_('MitsubishiHeavyClimate', climate_ir.ClimateIR)
 
+cg.add_library('Wire', None)
+
 CONFIG_SCHEMA = climate_ir.CLIMATE_IR_SCHEMA.extend({
     cv.GenerateID(): cv.declare_id(MitsubishiHeavyClimate),
 })
@@ -16,3 +18,5 @@ CONFIG_SCHEMA = climate_ir.CLIMATE_IR_SCHEMA.extend({
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     yield climate_ir.register_climate_ir(var, config)
+
+    cg.add_library('HeatpumpIR', None)
