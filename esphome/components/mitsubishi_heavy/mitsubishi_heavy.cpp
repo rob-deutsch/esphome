@@ -1,5 +1,6 @@
 #include "mitsubishi_heavy.h"
 #include "esphome/core/log.h"
+#include "ir_sender_esphome.h"
 
 namespace esphome {
 namespace mitsubishi_heavy {
@@ -43,7 +44,9 @@ void MitsubishiHeavyClimate::transmit_state() {
 
   temperatureCmd = (uint8_t) clamp(this->target_temperature, MITSUBISHI_TEMP_MIN, MITSUBISHI_TEMP_MAX);
 
-  // heatpumpIR->send(NULL, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd);
+  auto espSender = IRSenderESPHome(0, this->transmitter_);
+
+  heatpumpIR->send(espSender, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd);
 }
 
 }  // namespace mitsubishi

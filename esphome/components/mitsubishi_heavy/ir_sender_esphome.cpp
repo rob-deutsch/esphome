@@ -3,9 +3,9 @@
 namespace esphome {
 namespace mitsubishi_heavy {
 
-IRSenderESPHome::IRSenderESPHome(uint8_t pin, remote_transmitter::RemoteTransmitterComponent transmitter) : IRSender(pin)
+IRSenderESPHome::IRSenderESPHome(uint8_t pin, remote_transmitter::RemoteTransmitterComponent *transmitter) : IRSender(pin)
 {
-  auto transmit = transmitter.transmit();
+  auto transmit = transmitter->transmit();
   _transmit = &transmit;
   _data = _transmit->get_data();
 }
