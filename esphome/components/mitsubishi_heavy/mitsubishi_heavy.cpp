@@ -2,9 +2,9 @@
 #include "esphome/core/log.h"
 
 namespace esphome {
-namespace mitsubishi {
+namespace mitsubishi_heavy {
 
-static const char *TAG = "mitsubishi.climate";
+static const char *TAG = "mitsubishi_heavy.climate";
 
 const uint32_t MITSUBISHI_OFF = 0x00;
 
@@ -22,7 +22,7 @@ const uint16_t MITSUBISHI_HEADER_MARK = 3500;
 const uint16_t MITSUBISHI_HEADER_SPACE = 1700;
 const uint16_t MITSUBISHI_MIN_GAP = 17500;
 
-void MitsubishiClimate::transmit_state() {
+void MitsubishiHeavyClimate::transmit_state() {
   uint32_t remote_state[18] = {0x23, 0xCB, 0x26, 0x01, 0x00, 0x20, 0x48, 0x00, 0x30,
                                0x58, 0x61, 0x00, 0x00, 0x00, 0x10, 0x40, 0x00, 0x00};
 
