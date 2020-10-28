@@ -44,7 +44,7 @@ void MitsubishiHeavyClimate::transmit_state() {
 
   temperatureCmd = (uint8_t) clamp(this->target_temperature, MITSUBISHI_TEMP_MIN, MITSUBISHI_TEMP_MAX);
 
-  auto espSender = IRSenderESPHome(0, this->transmitter_);
+  IRSenderESPHome espSender(0, this->transmitter_);
 
   heatpumpIR->send(espSender, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd);
 }
