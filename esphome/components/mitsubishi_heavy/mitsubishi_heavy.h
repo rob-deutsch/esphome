@@ -7,8 +7,8 @@ namespace esphome {
 namespace mitsubishi_heavy {
 
 // Temperature
-const uint8_t MITSUBISHI_TEMP_MIN = 16;  // Celsius
-const uint8_t MITSUBISHI_TEMP_MAX = 31;  // Celsius
+const uint8_t MITSUBISHI_TEMP_MIN = 18;  // Celsius
+const uint8_t MITSUBISHI_TEMP_MAX = 30;  // Celsius
 
 class MitsubishiHeavyClimate : public climate_ir::ClimateIR {
  public:
