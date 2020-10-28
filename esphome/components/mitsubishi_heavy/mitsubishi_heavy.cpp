@@ -14,12 +14,28 @@ void MitsubishiHeavyClimate::transmit_state() {
   uint8_t powerModeCmd;
   uint8_t operatingModeCmd;
   uint8_t temperatureCmd;
+  uint8_t fanSpeedCmd;
 
-  uint8_t fanSpeedCmd = FAN_AUTO;
-  uint8_t swingVCmd = VDIR_AUTO;
-  uint8_t swingHCmd = HDIR_AUTO;
+  uint8_t swingVCmd = VDIR_SWING;
+  uint8_t swingHCmd = HDIR_SWING;
 
-  switch (this->mode) {
+  switch (this->fan_mode) {
+    case climate::CLIMATE_FAN_LOW:
+      fanSpeedCmd = FAN_2;
+      break;
+    case climate::CLIMATE_FAN_MEDIUM:
+      fanSpeedCmd = FAN_3;
+      break;
+    case climate::CLIMATE_FAN_HIGH:
+      fanSpeedCmd = FAN_4;
+      break;
+    case climate::CLIMATE_FAN_AUTO:
+    default:
+      fanSpeedCmd = FAN_AUTO;
+      break;
+  }
+
+ switch (this->mode) {
     case climate::CLIMATE_MODE_COOL:
       powerModeCmd = POWER_ON;
       operatingModeCmd = MODE_COOL;
@@ -31,6 +47,14 @@ void MitsubishiHeavyClimate::transmit_state() {
     case climate::CLIMATE_MODE_AUTO:
       powerModeCmd = POWER_ON;
       operatingModeCmd = MODE_AUTO;
+      break;
+    case climate::CLIMATE_MODE_FAN_ONLY:
+      powerModeCmd = POWER_ON;
+      operatingModeCmd = MODE_FAN;
+      break;
+    case climate::CLIMATE_ACTION_DRYING:
+      powerModeCmd = POWER_ON;
+      operatingModeCmd = MODE_DRY;
       break;
     case climate::CLIMATE_MODE_OFF:
     default:
