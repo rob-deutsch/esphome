@@ -1,6 +1,7 @@
 #include "mitsubishi_heavy.h"
 #include "esphome/core/log.h"
 #include "ir_sender_esphome.h"
+#include <MitsubishiHeavyHeatpumpIR.h>
 
 namespace esphome {
 namespace mitsubishi_heavy {
@@ -8,10 +9,6 @@ namespace mitsubishi_heavy {
 IRSenderESP32 irSender(2, 0);     // IR led on ESP22 digital pin 2, 0 - ESP32 LEDC channel. 
 
 static const char *TAG = "mitsubishi_heavy.climate";
-
-void MitsubishiHeavyClimate::setup() {
-  heatpumpIR = new MitsubishiHeavyZMHeatpumpIR();
-}
 
 void MitsubishiHeavyClimate::transmit_state() {
   uint8_t powerModeCmd;
@@ -46,7 +43,8 @@ void MitsubishiHeavyClimate::transmit_state() {
 
   IRSenderESPHome espSender(0, this->transmitter_);
 
-  heatpumpIR->send(espSender, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd);
+  auto heatpumpIR = new MitsubishiHeavyZMHeatpumpIR();
+  heatpumpIR->send(espSender, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd, false, false, false);
 }
 
 }  // namespace mitsubishi
