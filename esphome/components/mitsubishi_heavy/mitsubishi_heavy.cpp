@@ -6,8 +6,6 @@
 namespace esphome {
 namespace mitsubishi_heavy {
 
-IRSenderESP32 irSender(2, 0);     // IR led on ESP22 digital pin 2, 0 - ESP32 LEDC channel. 
-
 static const char *TAG = "mitsubishi_heavy.climate";
 
 void MitsubishiHeavyClimate::transmit_state() {
