@@ -63,9 +63,24 @@ void MitsubishiHeavyClimate::transmit_state() {
 
   temperatureCmd = (uint8_t) clamp(this->target_temperature, MITSUBISHI_TEMP_MIN, MITSUBISHI_TEMP_MAX);
 
+  // TODO: Are the following memory leaks?
   IRSenderESPHome espSender(0, this->transmitter_);
 
-  auto heatpumpIR = new MitsubishiHeavyZMHeatpumpIR();
+  MitsubishiHeavyHeatpumpIR *heatpumpIR;
+  switch(model_) {
+    case MODEL_ZJ:
+      heatpumpIR = new MitsubishiHeavyZJHeatpumpIR();
+      break;
+    case MODEL_ZM:
+      heatpumpIR = new MitsubishiHeavyZMHeatpumpIR();
+      break;
+    case MODEL_ZMP:
+      heatpumpIR = new MitsubishiHeavyZMPHeatpumpIR();
+      break;
+    default:
+      ESP_LOGE(TAG, "Invalid model");
+      return;
+  }
   heatpumpIR->send(espSender, powerModeCmd, operatingModeCmd, fanSpeedCmd, temperatureCmd, swingVCmd, swingHCmd, false, false, false);
 }
 
