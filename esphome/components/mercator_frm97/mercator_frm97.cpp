@@ -18,15 +18,10 @@ light::LightTraits MercatorFRM97Light::get_traits() {
 void MercatorFRM97Light::setup_state(light::LightState *state) { state_ = state; }
 
 void MercatorFRM97Light::update_state(bool state) {
-  bool binary;
-  state_->current_values_as_binary(&binary);
-
-  if (binary != state) {
-    auto call = state_->make_call();
-    call.set_state(state);
-    call.set_output(false);
-    call.perform();
-  }
+  auto call = state_->make_call();
+  call.set_state(state);
+  call.set_output(false);
+  call.perform();
 };
 
 void MercatorFRM97Light::write_state(light::LightState *state) {
