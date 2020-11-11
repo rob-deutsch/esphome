@@ -83,18 +83,18 @@ class MercatorFRM97Output : public Component, public remote_base::RemoteReceiver
 
     for (uint8_t i = 0; i < COMMAND_FRAME_SIZE; i++) {
       if (!this->read_byte(data, command_frame+i)) {
-        ESP_LOGD("mercator_frm97", "Invalid byte %i", i);
+        LOG_V("mercator_frm97", "Invalid byte %i", i);
         return false;
       }
     }
 
     if (command_frame[0] != 0xC5 || command_frame[1] != 0x68 || (command_frame[2] >> 4) != 0x9) {
-      ESP_LOGD("mercator_frm97", "Invalid header 0x%02X%02X%X", command_frame[0], command_frame[1], command_frame[2] >> 4);
+      LOG_V("mercator_frm97", "Invalid header 0x%02X%02X%X", command_frame[0], command_frame[1], command_frame[2] >> 4);
       return false;
     }
 
     if ((command_frame[2] & 0xF) != this->address_) {
-      ESP_LOGD("mercator_frm97", "Irrelevant address 0x%02X", command_frame[2] & 0xF);
+      LOG_V("mercator_frm97", "Irrelevant address 0x%X", command_frame[2] & 0xF);
       return false;
     }
 
@@ -120,10 +120,11 @@ class MercatorFRM97Output : public Component, public remote_base::RemoteReceiver
         this->light_->update_state(true);
         break;
       default:
+        ESP_LOGV("mercator_frm97", "Invalid command 0x%02X", command_frame[3]);
         break;
     }
 
-    ESP_LOGD("mercator_frm97", "Valid request");
+    ESP_LOGD("mercator_frm97", "Valid request to address 0x%02X command 0x%02X", this->address_, command_frame[3]);
     return true;
   }
  protected:
