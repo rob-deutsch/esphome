@@ -1297,6 +1297,13 @@ climate:
     name: LG Climate
   - platform: toshiba
     name: Toshiba Climate
+  - platform: heatpumpir
+    protocol: mitsubishi_heavy_zm
+    horizontal_default: left
+    vertical_default: up
+    name: HeatpumpIR Climate
+    min_temperature: 18
+    max_temperature: 30
 
 switch:
   - platform: gpio
