@@ -27,7 +27,7 @@ void MercatorFRM97Light::update_state(bool state) {
 void MercatorFRM97Light::write_state(light::LightState *state) {
   bool binary;
   state->current_values_as_binary(&binary);
-  this->parent_->set_lamp(binary);
+  this->parent_->set_lamp_state(binary);
 };
 
 // MercatorFRM97Fan
@@ -49,15 +49,34 @@ void MercatorFRM97Fan::control() {
     else if (this->speed == fan::FAN_SPEED_HIGH)
       fan_state = FAN_HIGH;
   }
-  this->parent_->set_fan(fan_state);
+  this->parent_->set_fan_state(fan_state);
 
   this->publish_state();
 }
 float MercatorFRM97Fan::get_setup_priority() const { return setup_priority::DATA; }
 
+void MercatorFRM97Fan::update_state(FanState state) {
+  this->state = true;
+  switch(state) {
+    case FAN_LOW:
+      this->speed = fan::FAN_SPEED_LOW;
+      break;
+    case FAN_MEDIUM:
+      this->speed = fan::FAN_SPEED_MEDIUM;
+      break;
+    case FAN_HIGH:
+      this->speed = fan::FAN_SPEED_HIGH;
+      break;
+    default:
+    case FAN_OFF:
+      this->state = false;
+  }
+  this->publish_state();
+};
+
 // MercatorFRM97Output
 
-void MercatorFRM97Output::set_lamp(bool state) {
+void MercatorFRM97Output::set_lamp_state(bool state) {
   if (state) {
     send_command(0x9F);
   } else {
@@ -65,7 +84,7 @@ void MercatorFRM97Output::set_lamp(bool state) {
   }
 };
 
-void MercatorFRM97Output::set_fan(FanState state) {
+void MercatorFRM97Output::set_fan_state(FanState state) {
   switch (state) {
     case FAN_LOW:
       send_command(0x18);

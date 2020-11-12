@@ -19,3 +19,4 @@ def to_code(config):
     paren = yield cg.get_variable(config[CONF_MERCATOR_FRM97_ID])
     var = cg.new_Pvariable(config[CONF_ID], paren)
     yield fan.register_fan(var, config)
+    cg.add(paren.set_fan(var))

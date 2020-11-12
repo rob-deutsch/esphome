@@ -42,6 +42,7 @@ class MercatorFRM97Fan : public Component, public fan::Fan {
   void setup() override;
   void dump_config() override;
   float get_setup_priority() const override;
+  void update_state(FanState state);
 
  protected:
   MercatorFRM97Output *parent_;
@@ -55,10 +56,11 @@ class MercatorFRM97Output : public Component, public remote_base::RemoteReceiver
     this->transmitter_ = transmitter;
   }
 
-  void set_lamp(bool state);
-  void set_fan(FanState state);
+  void set_lamp_state(bool state);
+  void set_fan_state(FanState state);
 
   void set_light(MercatorFRM97Light *light) { light_ = light; }
+  void set_fan(MercatorFRM97Fan *fan) { fan_ = fan; }
 
   bool on_receive(remote_base::RemoteReceiveData data) override { 
     if (!data.expect_item(1635, 400))
@@ -98,15 +100,19 @@ class MercatorFRM97Output : public Component, public remote_base::RemoteReceiver
     switch (command_frame[3]) {
       case 0x08:
         // Fan medium
+        this->fan_->update_state(FAN_MEDIUM);
         break;
       case 0x18:
         // Fan low
+        this->fan_->update_state(FAN_LOW);
         break;
       case 0x28:
         // Fan off
+        this->fan_->update_state(FAN_OFF);
         break;
       case 0x88:
         // Fan high
+        this->fan_->update_state(FAN_HIGH);
         break;
       case 0x8C:
         // Light off
@@ -144,6 +150,7 @@ class MercatorFRM97Output : public Component, public remote_base::RemoteReceiver
   uint8_t address_;
   remote_transmitter::RemoteTransmitterComponent *transmitter_;
   MercatorFRM97Light *light_;
+  MercatorFRM97Fan *fan_;
   void send_command(uint8_t cmd);
 };
 
