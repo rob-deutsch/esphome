@@ -6,7 +6,7 @@
 #include "esphome/components/remote_transmitter/remote_transmitter.h"
 #include "esphome/components/light/light_output.h"
 #include "esphome/core/log.h"
-#include "esphome/components/fan/fan_state.h"
+#include "esphome/components/fan/fan.h"
 
 namespace esphome {
 namespace mercator_frm97 {
@@ -36,19 +36,16 @@ class MercatorFRM97Light : public light::LightOutput {
   light::LightState *state_{nullptr};
 };
 
-class MercatorFRM97Fan : public Component {
+class MercatorFRM97Fan : public Component, public fan::Fan {
  public:
-  MercatorFRM97Fan(fan::FanState *fan, MercatorFRM97Output *parent) : fan_(fan), parent_(parent) {}
+  MercatorFRM97Fan(MercatorFRM97Output *parent) : parent_(parent) {}
   void setup() override;
-  void loop() override;
   void dump_config() override;
   float get_setup_priority() const override;
 
  protected:
-  fan::FanState *fan_;
-  bool next_update_{true};
-
   MercatorFRM97Output *parent_;
+  void control() override;
 };
 
 class MercatorFRM97Output : public Component, public remote_base::RemoteReceiverListener {

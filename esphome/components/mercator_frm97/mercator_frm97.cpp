@@ -32,28 +32,26 @@ void MercatorFRM97Light::write_state(light::LightState *state) {
 
 // MercatorFRM97Fan
 
-void MercatorFRM97Fan::dump_config() { ESP_LOGCONFIG(TAG, "Fan '%s':", this->fan_->get_name().c_str()); }
+void MercatorFRM97Fan::dump_config() { ESP_LOGCONFIG(TAG, "Fan '%s':", this->get_name().c_str()); }
 void MercatorFRM97Fan::setup() {
   auto traits = fan::FanTraits(false, true, false);
-  this->fan_->set_traits(traits);
-  this->fan_->add_on_state_callback([this]() { this->next_update_ = true; });
-}
-void MercatorFRM97Fan::loop() {
-  if (!this->next_update_) {
-    return;
-  }
-  this->next_update_ = false;
+  this->set_traits(traits);
 
+  this->restore_state_();
+}
+void MercatorFRM97Fan::control() {
   FanState fan_state = FAN_OFF;
-  if (this->fan_->state) {
-    if (this->fan_->speed == fan::FAN_SPEED_LOW)
+  if (this->state) {
+    if (this->speed == fan::FAN_SPEED_LOW)
       fan_state = FAN_LOW;
-    else if (this->fan_->speed == fan::FAN_SPEED_MEDIUM)
+    else if (this->speed == fan::FAN_SPEED_MEDIUM)
       fan_state = FAN_MEDIUM;
-    else if (this->fan_->speed == fan::FAN_SPEED_HIGH)
+    else if (this->speed == fan::FAN_SPEED_HIGH)
       fan_state = FAN_HIGH;
   }
   this->parent_->set_fan(fan_state);
+
+  this->publish_state();
 }
 float MercatorFRM97Fan::get_setup_priority() const { return setup_priority::DATA; }
 
