@@ -1,0 +1,4 @@
+rv3032:
+  i2c_id: i2c_bus
+  frequency: 32768Hz
+  offset: 0
